@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: app
+      MYSQL_USER: app
+      MYSQL_PASSWORD: hd7181BKa
+    ports:
+      - 3306:3306
+  postgresql:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: hd7181BKa
+      POSTGRES_USER: app
+      POSTGRES_DB: app
+    ports:
+      - 5432:5432
+  node:
+    image: node:8
+    user: node
+    working_dir: /app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./gate-simulator:/app
+    ports:
+      - 9999:9999
+    command: "npm start"
