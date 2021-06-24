@@ -62,12 +62,12 @@ public class MainPage {
     }
 
     public void checkSuccessMessage() {
-        $(successMessageTitle).shouldBe(Condition.visible, Duration.ofSeconds(12000));
+        $(successMessageTitle).shouldBe(Condition.visible, Duration.ofSeconds(30));
         successMessage.shouldBe(Condition.visible);
     }
 
     public void checkErrorMessage() {
-        errorMessageTitle.shouldBe(Condition.visible, Duration.ofSeconds(12000));
+        errorMessageTitle.shouldBe(Condition.visible, Duration.ofSeconds(30));
         errorMessage.shouldBe(Condition.visible);
     }
 }

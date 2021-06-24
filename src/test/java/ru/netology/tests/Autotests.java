@@ -11,20 +11,23 @@ import ru.netology.data.DataHelper;
 import ru.netology.pages.MainPage;
 
 import static com.codeborne.selenide.Selenide.*;
+import static org.junit.Assert.*;
 
 public class Autotests {
 
     @BeforeAll
     static void setUpAll() {
-        SelenideLogger.addListener("allure",new AllureSelenide());
+        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
     @AfterAll
-    static void tearDownAll(){SelenideLogger.removeListener("allure");
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
     }
 
     @BeforeEach
     void setUp() {
+        DataHelper.clearAllData();
         openSite();
     }
 
@@ -42,6 +45,16 @@ public class Autotests {
 
         mainPage.fillDataForBuy(validCard);
         mainPage.checkSuccessMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertEquals(paymentEntity.getAmount(), 4500000);
+        assertEquals(paymentEntity.getStatus(), DataHelper.APPROVED_STATUS);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertEquals(orderEntity.getPayment_id(),paymentEntity.getId());
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
     }
 
     @Test
@@ -52,6 +65,16 @@ public class Autotests {
 
         mainPage.fillDataForBuy(InvalidCard);
         mainPage.checkError();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
+
     }
 
     @Test
@@ -62,6 +85,36 @@ public class Autotests {
 
         mainPage.fillDataForBuy(InvalidCard);
         mainPage.checkErrorExpired();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
+    }
+
+
+    @Test
+    public void ShouldBeTestBuyTravelErrorNameOne() {
+        MainPage mainPage = new MainPage();
+
+        val InvalidCard = DataHelper.getInvalidNameOne();
+
+        mainPage.fillDataForBuy(InvalidCard);
+        mainPage.checkErrorMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
+
     }
 
 //    Автоматизация покупки через карту (вторая карта)
@@ -74,6 +127,16 @@ public class Autotests {
 
         mainPage.fillDataForBuy(validCard);
         mainPage.checkSuccessMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertEquals(paymentEntity.getAmount(), 4500000);
+        assertEquals(paymentEntity.getStatus(), DataHelper.DECLINED_STATUS);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertEquals(orderEntity.getPayment_id(),paymentEntity.getId());
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
     }
 
     @Test
@@ -84,6 +147,15 @@ public class Autotests {
 
         mainPage.fillDataForBuy(InvalidCard);
         mainPage.checkError();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
     @Test
@@ -94,8 +166,38 @@ public class Autotests {
 
         mainPage.fillDataForBuy(InvalidCard);
         mainPage.checkErrorExpired();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
+
+    @Test
+    public void ShouldBeTestBuyTravelErrorNameTwo() {
+        MainPage mainPage = new MainPage();
+
+        val InvalidCard = DataHelper.getInvalidNameCardTwo();
+
+        mainPage.fillDataForBuy(InvalidCard);
+        mainPage.checkErrorMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
+    }
+
+//      Неверный номер карты
     @Test
     public void ShouldBeTestBuyTravelErrorNumber() {
         MainPage mainPage = new MainPage();
@@ -104,15 +206,34 @@ public class Autotests {
 
         mainPage.fillDataForBuy(InvalidCard);
         mainPage.checkErrorMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravel() {
+    public void ShouldBeTestCreditTravelErrorNumber() {
         MainPage mainPage = new MainPage();
 
-        val validCard = DataHelper.getValidCardOne();
+        val InvalidCard = DataHelper.getInvalidNumber();
 
-        mainPage.fillDataForCredit(validCard);
+        mainPage.fillDataForCredit(InvalidCard);
+        mainPage.checkErrorMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
 //    Автоматизация покупки через кредит (первая карта)
@@ -125,6 +246,16 @@ public class Autotests {
 
         mainPage.fillDataForCredit(validCard);
         mainPage.checkSuccessMessage();
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertEquals(creditRequestEntity.getStatus(), DataHelper.APPROVED_STATUS);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertEquals(orderEntity.getCredit_id(),creditRequestEntity.getId());
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
     }
 
     @Test
@@ -135,6 +266,15 @@ public class Autotests {
 
         mainPage.fillDataForCredit(InvalidCard);
         mainPage.checkError();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
     @Test
@@ -145,6 +285,34 @@ public class Autotests {
 
         mainPage.fillDataForCredit(InvalidCard);
         mainPage.checkErrorExpired();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
+    }
+
+    @Test
+    public void ShouldBeTestCreditTravelInvalidNameOne() {
+        MainPage mainPage = new MainPage();
+
+        val validCard = DataHelper.getInvalidNameOne();
+
+        mainPage.fillDataForCredit(validCard);
+        mainPage.checkErrorMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
 //    Автоматизация покупки через кредит (вторая карта)
@@ -157,6 +325,15 @@ public class Autotests {
 
         mainPage.fillDataForCredit(validCard);
         mainPage.checkSuccessMessage();
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertEquals(creditRequestEntity.getStatus(), DataHelper.DECLINED_STATUS);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertEquals(orderEntity.getCredit_id(),creditRequestEntity.getId());
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
     }
 
     @Test
@@ -167,6 +344,15 @@ public class Autotests {
 
         mainPage.fillDataForCredit(InvalidCard);
         mainPage.checkError();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
     @Test
@@ -177,16 +363,34 @@ public class Autotests {
 
         mainPage.fillDataForCredit(InvalidCard);
         mainPage.checkErrorExpired();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelErrorNumber() {
+    public void ShouldBeTestCreditTravelInvalidNameTwo() {
         MainPage mainPage = new MainPage();
 
-        val InvalidCard = DataHelper.getInvalidNumber();
+        val validCard = DataHelper.getInvalidNameCardTwo();
 
-        mainPage.fillDataForCredit(InvalidCard);
+        mainPage.fillDataForCredit(validCard);
         mainPage.checkErrorMessage();
+
+        val paymentEntity = DataHelper.getPaymentEntity();
+        assertNull(paymentEntity);
+
+        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        assertNull(creditRequestEntity);
+
+        val orderEntity = DataHelper.getOrderEntity();
+        assertNull(orderEntity);
     }
 }
 
