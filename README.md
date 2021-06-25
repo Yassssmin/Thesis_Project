@@ -11,7 +11,8 @@ java -jar aqa-shop.jar
 ```
 ## 3 шаг, Запуск тестов:
 ```
-./gradlew clean test allureReport
+./gradlew clean test 
+./gradlew allureServe
 
 ```
 
