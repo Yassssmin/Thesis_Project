@@ -23,11 +23,9 @@ allure {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
-    testImplementation 'mysql:mysql-connector-java:8.0.18'
     testImplementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+    testImplementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
     testImplementation 'com.github.javafaker:javafaker:1.0.1'
-    testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     testImplementation group: 'com.codeborne', name: 'selenide', version: '5.20.4'
     testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
@@ -40,4 +38,7 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'datasource.url', System.getProperty('datasource.url')
+    systemProperty 'datasource.user', System.getProperty('datasource.user')
+    systemProperty 'datasource.password', System.getProperty('datasource.password')
 }

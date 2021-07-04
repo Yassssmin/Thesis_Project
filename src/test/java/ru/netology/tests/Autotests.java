@@ -7,8 +7,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import ru.netology.data.DataBaseHelper;
 import ru.netology.data.DataHelper;
 import ru.netology.pages.MainPage;
+import ru.netology.pages.Form;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.Assert.*;
@@ -27,7 +29,7 @@ public class Autotests {
 
     @BeforeEach
     void setUp() {
-        DataHelper.clearAllData();
+        DataBaseHelper.clearAllData();
         openSite();
     }
 
@@ -38,81 +40,89 @@ public class Autotests {
 //    Автоматизация покупки через карту (первая карта)
 
     @Test
-    public void ShouldBeTestBuyTravelSuccessOne() {
+    public void shouldBeTestBuyTravelSuccessOne() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
         val validCard = DataHelper.getValidCardOne();
 
-        mainPage.fillDataForBuy(validCard);
-        mainPage.checkSuccessMessage();
+        mainPage.clickForBuy();
+        pullForm.fillData(validCard);
+        pullForm.checkSuccessMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertEquals(paymentEntity.getAmount(), 4500000);
-        assertEquals(paymentEntity.getStatus(), DataHelper.APPROVED_STATUS);
+        assertEquals(paymentEntity.getStatus(), DataBaseHelper.APPROVED_STATUS);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertEquals(orderEntity.getPayment_id(),paymentEntity.getId());
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
     }
 
     @Test
-    public void ShouldBeTestBuyTravelErrorDateOne() {
+    public void shouldBeTestBuyTravelErrorDateOne() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateOne();
+        val invalidCard = DataHelper.getInvalidDateOne();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkError();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkError();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
 
     }
 
     @Test
-    public void ShouldBeTestBuyTravelErrorDateOneExpired() {
+    public void shouldBeTestBuyTravelErrorDateOneExpired() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateOneExpired();
+        val invalidCard = DataHelper.getInvalidDateOneExpired();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkErrorExpired();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorExpired();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
 
     @Test
-    public void ShouldBeTestBuyTravelErrorNameOne() {
+    public void shouldBeTestBuyTravelErrorNameOne() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidNameOne();
+        val invalidCard = DataHelper.getInvalidNameOne();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkErrorMessage();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
 
     }
@@ -120,276 +130,304 @@ public class Autotests {
 //    Автоматизация покупки через карту (вторая карта)
 
     @Test
-    public void ShouldBeTestBuyTravelSuccessTwo() {
+    public void shouldBeTestBuyTravelSuccessTwo() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
         val validCard = DataHelper.getValidCardTwo();
 
-        mainPage.fillDataForBuy(validCard);
-        mainPage.checkSuccessMessage();
+        mainPage.clickForBuy();
+        pullForm.fillData(validCard);
+        pullForm.checkSuccessMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertEquals(paymentEntity.getAmount(), 4500000);
-        assertEquals(paymentEntity.getStatus(), DataHelper.DECLINED_STATUS);
+        assertEquals(paymentEntity.getStatus(), DataBaseHelper.DECLINED_STATUS);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertEquals(orderEntity.getPayment_id(),paymentEntity.getId());
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
     }
 
     @Test
-    public void ShouldBeTestBuyTravelErrorDateTwo() {
+    public void shouldBeTestBuyTravelErrorDateTwo() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateTwo();
+        val invalidCard = DataHelper.getInvalidDateTwo();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkError();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkError();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestBuyTravelErrorDateTwoExpired() {
+    public void shouldBeTestBuyTravelErrorDateTwoExpired() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateTwoExpired();
+        val invalidCard = DataHelper.getInvalidDateTwoExpired();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkErrorExpired();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorExpired();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
 
     @Test
-    public void ShouldBeTestBuyTravelErrorNameTwo() {
+    public void shouldBeTestBuyTravelErrorNameTwo() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidNameCardTwo();
+        val invalidCard = DataHelper.getInvalidNameCardTwo();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkErrorMessage();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
 //      Неверный номер карты
     @Test
-    public void ShouldBeTestBuyTravelErrorNumber() {
+    public void shouldBeTestBuyTravelErrorNumber() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidNumber();
+        val invalidCard = DataHelper.getInvalidNumber();
 
-        mainPage.fillDataForBuy(InvalidCard);
-        mainPage.checkErrorMessage();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelErrorNumber() {
+    public void shouldBeTestCreditTravelErrorNumber() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidNumber();
+        val invalidCard = DataHelper.getInvalidNumber();
 
-        mainPage.fillDataForCredit(InvalidCard);
-        mainPage.checkErrorMessage();
+        mainPage.clickForBuy();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
 //    Автоматизация покупки через кредит (первая карта)
 
     @Test
-    public void ShouldBeTestCreditTravelSuccessOne() {
+    public void shouldBeTestCreditTravelSuccessOne() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
         val validCard = DataHelper.getValidCardOne();
 
-        mainPage.fillDataForCredit(validCard);
-        mainPage.checkSuccessMessage();
+        mainPage.clickForCredit();
+        pullForm.fillData(validCard);
+        pullForm.checkSuccessMessage();
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
-        assertEquals(creditRequestEntity.getStatus(), DataHelper.APPROVED_STATUS);
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
+        assertEquals(creditRequestEntity.getStatus(), DataBaseHelper.APPROVED_STATUS);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertEquals(orderEntity.getCredit_id(),creditRequestEntity.getId());
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
     }
 
     @Test
-    public void ShouldBeTestCreditTravelErrorDateOne() {
+    public void shouldBeTestCreditTravelErrorDateOne() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateOne();
+        val invalidCard = DataHelper.getInvalidDateOne();
 
-        mainPage.fillDataForCredit(InvalidCard);
-        mainPage.checkError();
+        mainPage.clickForCredit();
+        pullForm.fillData(invalidCard);
+        pullForm.checkError();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelErrorDateOneExpired() {
+    public void shouldBeTestCreditTravelErrorDateOneExpired() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateOneExpired();
+        val invalidCard = DataHelper.getInvalidDateOneExpired();
 
-        mainPage.fillDataForCredit(InvalidCard);
-        mainPage.checkErrorExpired();
+        mainPage.clickForCredit();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorExpired();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelInvalidNameOne() {
+    public void shouldBeTestCreditTravelInvalidNameOne() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val validCard = DataHelper.getInvalidNameOne();
+        val invalidCard = DataHelper.getInvalidNameOne();
 
-        mainPage.fillDataForCredit(validCard);
-        mainPage.checkErrorMessage();
+        mainPage.clickForCredit();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
 //    Автоматизация покупки через кредит (вторая карта)
 
     @Test
-    public void ShouldBeTestCreditTravelSuccessTwo() {
+    public void shouldBeTestCreditTravelSuccessTwo() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
         val validCard = DataHelper.getValidCardTwo();
 
-        mainPage.fillDataForCredit(validCard);
-        mainPage.checkSuccessMessage();
+        mainPage.clickForCredit();
+        pullForm.fillData(validCard);
+        pullForm.checkSuccessMessage();
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
-        assertEquals(creditRequestEntity.getStatus(), DataHelper.DECLINED_STATUS);
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
+        assertEquals(creditRequestEntity.getStatus(), DataBaseHelper.DECLINED_STATUS);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertEquals(orderEntity.getCredit_id(),creditRequestEntity.getId());
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelErrorDateTwo() {
+    public void shouldBeTestCreditTravelErrorDateTwo() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateTwo();
+        val invalidCard = DataHelper.getInvalidDateTwo();
 
-        mainPage.fillDataForCredit(InvalidCard);
-        mainPage.checkError();
+        mainPage.clickForCredit();
+        pullForm.fillData(invalidCard);
+        pullForm.checkError();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelErrorDateTwoExpired() {
+    public void shouldBeTestCreditTravelErrorDateTwoExpired() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val InvalidCard = DataHelper.getInvalidDateTwoExpired();
+        val invalidCard = DataHelper.getInvalidDateTwoExpired();
 
-        mainPage.fillDataForCredit(InvalidCard);
-        mainPage.checkErrorExpired();
+        mainPage.clickForCredit();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorExpired();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 
     @Test
-    public void ShouldBeTestCreditTravelInvalidNameTwo() {
+    public void shouldBeTestCreditTravelInvalidNameTwo() {
         MainPage mainPage = new MainPage();
+        Form pullForm = new Form();
 
-        val validCard = DataHelper.getInvalidNameCardTwo();
+        val invalidCard = DataHelper.getInvalidNameCardTwo();
 
-        mainPage.fillDataForCredit(validCard);
-        mainPage.checkErrorMessage();
+        mainPage.clickForCredit();
+        pullForm.fillData(invalidCard);
+        pullForm.checkErrorMessage();
 
-        val paymentEntity = DataHelper.getPaymentEntity();
+        val paymentEntity = DataBaseHelper.getPaymentEntity();
         assertNull(paymentEntity);
 
-        val creditRequestEntity = DataHelper.getCreditRequestEntity();
+        val creditRequestEntity = DataBaseHelper.getCreditRequestEntity();
         assertNull(creditRequestEntity);
 
-        val orderEntity = DataHelper.getOrderEntity();
+        val orderEntity = DataBaseHelper.getOrderEntity();
         assertNull(orderEntity);
     }
 }
