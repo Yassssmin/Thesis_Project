@@ -39,7 +39,7 @@ java -jar aqa-shop.jar \
 ./gradlew allureServe
 ```
 # Тестовая документация:
-- [План](./blob/master/test-documentation/Plan.md)
-- [Отчет](./blob/master/test-documentation/Summary.md)
+- [План](https://github.com/Yassssmin/Thesis_Project/blob/master/test-documentation/Plan.md)
+- [Отчет](https://github.com/Yassssmin/Thesis_Project/blob/master/test-documentation/Summary.md)
 
 
